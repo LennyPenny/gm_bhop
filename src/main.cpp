@@ -48,16 +48,22 @@ bool __fastcall hookedCreateMove(void *_this, void *, float inputSampleTime, CUs
 }
 GMOD_MODULE_OPEN() {
 	baseClient = GetInterface<IBaseClientDLL *>("client.dll", CLIENT_DLL_INTERFACE_VERSION);
-	if (!baseClient)
+	if (!baseClient) {
+		Warning("Couldn't get CLIENT_DLL_INTERFACE");
 		return 0;
+	}
 
 	client = GetInterface<IVEngineClient *>("engine.dll", VENGINE_CLIENT_INTERFACE_VERSION);
-	if (!client)
+	if (!client) {
+		Warning("Couldn't get VENGINE_CLIENT_INTERFACE");
 		return 0;
+	}
 
 	list = GetInterface<IClientEntityList *>("client.dll", VCLIENTENTITYLIST_INTERFACE_VERSION);
-	if (!list)
+	if ( !list ) {
+		Warning("Couldn't get VCLIENTENTITYLIST_INTERFACE");
 		return 0;
+	}
 
 
 	void *clientModeShared = **( void *** ) SigScan("client.dll").Scan("\x8B\x0D????\x50\x8B\x01\x8B\x50\x24", 2);
